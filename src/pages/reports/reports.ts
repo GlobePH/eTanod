@@ -286,8 +286,6 @@ export class ReportsPage {
     });
   }
 
-  onMarkerAdded(marker) { console.log(marker); }
-
   addMarker(position: any, content){
     let marker = {
       position: position,
