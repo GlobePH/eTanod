@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, ToastController } from 'ionic-angular';
 
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
+import { ReportDetailPage } from '../reportDetail/reportDetail';
 import { ReportCrimePage } from '../reportCrime/reportCrime';
 
 declare const google: any;
@@ -19,10 +20,19 @@ export class ReportsPage {
 
   reports: FirebaseListObservable<any>;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public modalCtrl: ModalController, private toastCtrl: ToastController) {
     this.reports = db.list('/reports');
     this.reports.subscribe(data => {
-      console.log("called");
+      for(let i = 0; i < data.length; i++){
+        this.addMarker(new google.maps.LatLng(data[i].latitude, data[i].longitude), data[i].type);
+      }
+      let toast = this.toastCtrl.create({
+        message: 'Something near you is happening',
+        duration: 3000,
+        position: 'top'
+      });
+
+      toast.present();
     });
   }
 
@@ -276,9 +286,10 @@ export class ReportsPage {
     });
   }
 
+  onMarkerAdded(marker) { console.log(marker); }
+
   addMarker(position: any, content){
-    let marker = new google.maps.Marker({
-      map: this.map,
+    let marker = {
       position: position,
       icon: {
         url: "assets/pins/redDot.png", // url
@@ -286,7 +297,7 @@ export class ReportsPage {
         origin: new google.maps.Point(0,0), // origin
         anchor: new google.maps.Point(0, 0)
       }
-    });
+    };
 
     this.addInfoWindow(marker, content);
   }
@@ -315,6 +326,10 @@ export class ReportsPage {
   openModal() {
     let myModal = this.modalCtrl.create(ReportCrimePage);
     myModal.present();
+  }
+
+  goToDetail() {
+    this.navCtrl.push(ReportDetailPage);
   }
 
 

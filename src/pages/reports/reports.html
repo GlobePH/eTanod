@@ -11,7 +11,17 @@
   </div>
 
   <ion-list *ngIf="isSet(1)">
-    <button ion-item *ngFor="let report of reports | async">
+    <button ion-item *ngFor="let report of reports | async" (click)="goToDetail()">
+      <ion-avatar item-start>
+        <img src="assets/type-icons/{{report.type}}.png">
+      </ion-avatar>
+      <h1>{{ report.description }}</h1>
+      <ion-note item-end>100m</ion-note>
+    </button>
+  </ion-list>
+
+  <ion-list *ngIf="isSet(2)">
+    <button ion-item *ngFor="let report of reports | async" (click)="goToDetail()">
       <ion-avatar item-start>
         <img src="assets/type-icons/{{report.type}}.png">
       </ion-avatar>

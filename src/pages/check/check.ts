@@ -11,4 +11,6 @@ export class CheckPage {
 
   }
 
+  hidden = false
+
 }

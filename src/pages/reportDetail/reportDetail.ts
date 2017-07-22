@@ -11,4 +11,14 @@ export class ReportDetailPage {
 
   }
 
+  tab = 1;
+
+  setTab(newTab){
+    this.tab = newTab;
+  }
+
+  isSet(tabNum){
+    return this.tab === tabNum;
+  }
+
 }
