@@ -1,8 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { Geolocation } from '@ionic-native/geolocation';
-
 declare const google: any;
 
 @Component({
@@ -13,18 +11,17 @@ export class ReportsPage {
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
-  coords: any;
 
-  constructor(public navCtrl: NavController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController) {
 
   }
 
   ionViewDidLoad(){
-    // this.loadMap();
+    this.loadMap();
   }
 
   loadMap(){
-    let latLng = new google.maps.LatLng(14.6097, 120.9896);
+    let latLng = new google.maps.LatLng(14.5535, 121.0499);
 
     let mapOptions = {
       center: latLng,
@@ -255,15 +252,5 @@ export class ReportsPage {
     };
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-
-    this.geolocation.watchPosition().subscribe((position) => {
-      this.coords = JSON.stringify(position.coords);
-
-    });
-  }
-
-
-
-
-
+  };
 }
