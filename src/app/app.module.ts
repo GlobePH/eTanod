@@ -7,10 +7,26 @@ import { LoginPage } from '../pages/login/login';
 import { ReportsPage } from '../pages/reports/reports';
 import { ReportDetailPage } from '../pages/reportDetail/reportDetail';
 import { ProfilePage } from '../pages/profile/profile';
+import { StorePage } from '../pages/store/store';
+import { ItemDetailPage } from '../pages/itemDetail/itemDetail';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { Facebook } from '@ionic-native/facebook';
+
+import { AngularFireModule } from 'angularfire2';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyBaBNvS_Bd5R1_3cPMgbjGpmhTTjpwL31Q",
+  authDomain: "etanod-12ebe.firebaseapp.com",
+  databaseURL: "https://etanod-12ebe.firebaseio.com",
+  projectId: "etanod-12ebe",
+  storageBucket: "etanod-12ebe.appspot.com",
+  messagingSenderId: "523367764822"
+};
 
 @NgModule({
   declarations: [
@@ -19,11 +35,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ReportsPage,
     ReportDetailPage,
     ProfilePage,
+    StorePage,
+    ItemDetailPage,
     TabsPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -32,12 +51,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ReportsPage,
     ReportDetailPage,
     ProfilePage,
+    StorePage,
+    ItemDetailPage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Facebook
   ]
 })
 export class AppModule {}
