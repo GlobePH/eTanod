@@ -1,17 +1,34 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-
-import { ReportCrimePage } from '../reportCrime/reportCrime';
 
 declare const google: any;
 
 @Component({
-  selector: 'page-reports',
-  templateUrl: 'reports.html'
+  selector: 'page-reportCrime',
+  templateUrl: 'reportCrime.html'
 })
-export class ReportsPage {
+export class ReportCrimePage {
+
+  report = {
+    type: "",
+    description: "",
+    latitude: "",
+    longitude: "",
+    valid: true,
+    users: {},
+    chats: {
+        message1: {
+            user: "Bot",
+            type: "text",
+            content: "Hello, World!",
+            timestamp: "today"
+        }
+    }
+  };
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
@@ -19,11 +36,17 @@ export class ReportsPage {
 
   reports: FirebaseListObservable<any>;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public modalCtrl: ModalController) {
-    this.reports = db.list('/reports');
-    this.reports.subscribe(data => {
-      console.log("called");
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, private afAuth: AngularFireAuth, public db: AngularFireDatabase) {
+    this.afAuth.authState.subscribe(authData => {
+      this.report.users[authData.uid] = {
+        name: authData.displayName,
+        email: authData.email,
+        contact: "09177948846",
+        timestamp: "now"
+      };
     });
+
+    this.reports = db.list('/reports');
   }
 
   ionViewDidLoad(){
@@ -36,7 +59,6 @@ export class ReportsPage {
       zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
-      draggable: false,
       styles: [
         {
           "elementType": "geometry",
@@ -262,61 +284,30 @@ export class ReportsPage {
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-    let icon = {
-      url: "assets/pins/currentPosition.png", // url
-      scaledSize: new google.maps.Size(10, 10), // scaled size
-      origin: new google.maps.Point(0,0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
-    };
+    this.report.latitude = "14.5535";
+    this.report.longitude = "121.0499";
 
     let marker = new google.maps.Marker({
       map: this.map,
       position: this.latLng,
-      icon: icon
+      draggable:true
+    });
+    google.maps.event.addListener(marker, 'dragend', function()
+    {
+      this.report.latitude = marker.getPosition().lat();
+      this.report.longitude = marker.getPosition().lng();
     });
   }
 
-  addMarker(position: any, content){
-    let marker = new google.maps.Marker({
-      map: this.map,
-      position: position,
-      icon: {
-        url: "assets/pins/redDot.png", // url
-        scaledSize: new google.maps.Size(10, 10), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0)
-      }
-    });
-
-    this.addInfoWindow(marker, content);
-  }
-
-  addInfoWindow(marker, content){
-    let infoWindow = new google.maps.InfoWindow({
-      content: content
-    });
-    google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
-    });
+  closeModal() {
+    this.viewCtrl.dismiss();
   }
 
 
-
-  tab = 1;
-
-  setTab(newTab){
-    this.tab = newTab;
+  submit(){
+    this.reports.push(this.report);
+    this.closeModal();
   }
-
-  isSet(tabNum){
-    return this.tab === tabNum;
-  }
-
-  openModal() {
-    let myModal = this.modalCtrl.create(ReportCrimePage);
-    myModal.present();
-  }
-
 
 
 }

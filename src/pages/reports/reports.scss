@@ -41,4 +41,13 @@ page-reports {
   div.tab button.active {
       background-color: #ccc;
   }
+
+  button.fabAddButton{
+    background-color: red;
+  }
+  ion-fab{
+    position: fixed;
+    top: 75%;
+    left: 80%;
+  }
 }

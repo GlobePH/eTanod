@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { ReportsPage } from '../pages/reports/reports';
 import { ReportDetailPage } from '../pages/reportDetail/reportDetail';
+import { ReportCrimePage } from '../pages/reportCrime/reportCrime';
 import { ProfilePage } from '../pages/profile/profile';
 import { CheckPage } from '../pages/check/check';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -17,7 +18,7 @@ import { Facebook } from '@ionic-native/facebook';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -35,6 +36,7 @@ export const firebaseConfig = {
     LoginPage,
     ReportsPage,
     ReportDetailPage,
+    ReportCrimePage,
     ProfilePage,
     CheckPage,
     TabsPage
@@ -50,6 +52,7 @@ export const firebaseConfig = {
     LoginPage,
     ReportsPage,
     ReportDetailPage,
+    ReportCrimePage,
     ProfilePage,
     CheckPage,
     TabsPage
