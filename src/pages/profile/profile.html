@@ -7,5 +7,13 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item *ngIf="userProfile">
+      <ion-thumbnail item-start>
+        <img [src]="userProfile.photoURL">
+      </ion-thumbnail>
+      <h1>{{ userProfile.displayName }}</h1>
+      <h3>{{ userProfile.email }}</h3>
+    </ion-item>
+  </ion-list>
 </ion-content>

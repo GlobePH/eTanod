@@ -16,7 +16,11 @@ export class LoginPage {
   userProfile: any = null;
 
   constructor(public navCtrl: NavController, private facebook: Facebook, private afAuth: AngularFireAuth) {
-
+    afAuth.authState.subscribe(authData => {
+      if(authData){
+        navCtrl.setRoot(TabsPage, {userProfile: this.userProfile});
+      }
+    });
   }
 
   facebookLogin(){
@@ -26,8 +30,10 @@ export class LoginPage {
 
         this.afAuth.auth.signInWithCredential(facebookCredential)
         .then((success) => {
-            console.log("Firebase success: " + JSON.stringify(success));
+            // console.log("Firebase success: " + JSON.stringify(success));
             this.userProfile = success;
+
+            this.navCtrl.setRoot(TabsPage, {userProfile: this.userProfile});
         })
         .catch((error) => {
             console.log("Firebase failure: " + JSON.stringify(error));
