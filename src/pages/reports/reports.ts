@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+
 declare const google: any;
 
 @Component({
@@ -11,8 +13,12 @@ export class ReportsPage {
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
+  latLng = new google.maps.LatLng(14.5535, 121.0499);
 
-  constructor(public navCtrl: NavController) {
+  reports: FirebaseListObservable<any>;
+
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase) {
+    this.reports = db.list('/reports');
 
   }
 
@@ -21,13 +27,12 @@ export class ReportsPage {
   }
 
   loadMap(){
-    let latLng = new google.maps.LatLng(14.5535, 121.0499);
-
     let mapOptions = {
-      center: latLng,
-      zoom: 15,
+      center: this.latLng,
+      zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
+      draggable: false,
       styles: [
         {
           "elementType": "geometry",
@@ -252,5 +257,57 @@ export class ReportsPage {
     };
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-  };
+
+    let icon = {
+      url: "assets/pins/currentPosition.png", // url
+      scaledSize: new google.maps.Size(10, 10), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    let marker = new google.maps.Marker({
+      map: this.map,
+      position: this.latLng,
+      icon: icon
+    });
+  }
+
+  addMarker(position: any, content){
+    let marker = new google.maps.Marker({
+      map: this.map,
+      position: position,
+      icon: {
+        url: "assets/pins/redDot.png", // url
+        scaledSize: new google.maps.Size(10, 10), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0)
+      }
+    });
+
+    this.addInfoWindow(marker, content);
+  }
+
+  addInfoWindow(marker, content){
+    let infoWindow = new google.maps.InfoWindow({
+      content: content
+    });
+    google.maps.event.addListener(marker, 'click', () => {
+      infoWindow.open(this.map, marker);
+    });
+  }
+
+
+
+  tab = 1;
+
+  setTab(newTab){
+    this.tab = newTab;
+  }
+
+  isSet(tabNum){
+    return this.tab === tabNum;
+  }
+
+
+
 }

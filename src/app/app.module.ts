@@ -7,8 +7,7 @@ import { LoginPage } from '../pages/login/login';
 import { ReportsPage } from '../pages/reports/reports';
 import { ReportDetailPage } from '../pages/reportDetail/reportDetail';
 import { ProfilePage } from '../pages/profile/profile';
-import { StorePage } from '../pages/store/store';
-import { ItemDetailPage } from '../pages/itemDetail/itemDetail';
+import { CheckPage } from '../pages/check/check';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -18,6 +17,7 @@ import { Facebook } from '@ionic-native/facebook';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -36,8 +36,7 @@ export const firebaseConfig = {
     ReportsPage,
     ReportDetailPage,
     ProfilePage,
-    StorePage,
-    ItemDetailPage,
+    CheckPage,
     TabsPage
   ],
   imports: [
@@ -52,8 +51,7 @@ export const firebaseConfig = {
     ReportsPage,
     ReportDetailPage,
     ProfilePage,
-    StorePage,
-    ItemDetailPage,
+    CheckPage,
     TabsPage
   ],
   providers: [
@@ -61,7 +59,8 @@ export const firebaseConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Facebook,
-    AngularFireAuth
+    AngularFireAuth,
+    AngularFireDatabase
   ]
 })
 export class AppModule {}
