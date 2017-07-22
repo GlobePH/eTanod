@@ -7,13 +7,41 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <!-- <ion-list>
     <ion-item *ngIf="userProfile">
       <ion-thumbnail item-start>
         <img [src]="userProfile.photoURL">
       </ion-thumbnail>
-      <h1>{{ userProfile.displayName }}</h1>
-      <h3>{{ userProfile.email }}</h3>
+      <h2>{{ userProfile.displayName }}</h2>
+      <p>{{ userProfile.email }}</p>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+
+  <ion-card>
+    <img [src]="userProfile.photoURL"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{ userProfile.displayName }}
+        </ion-card-title>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Contact Detail
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <button ion-item>
+            <ion-icon name="mail" item-left></ion-icon>
+            <a class="plainText" href="mailto:{{ userProfile.email }}">{{ userProfile.email }}</a>
+          </button>
+
+          <button ion-item>
+            <ion-icon name="call" item-left></ion-icon>
+            <a class="plainText" href="tel:+923008203588">+923008203588</a>
+          </button>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
